@@ -51,7 +51,7 @@ public class ExcelUtils {
 		HSSFSheet sheet= wb.createSheet();
 		//将模板中数据添加到生成的表单中
 		sheet=copyRows(wb,wb.getSheetAt(0),sheet);
-		int sheetIx=0;
+		int sheetIx=1;
 		//将数据加到表单中
 		fileName=setExportExcel(request,response,fileName,list,wb,sheetIx);
 		if(StringUtils.isBlank(fileName)) {
@@ -123,7 +123,7 @@ public class ExcelUtils {
 					continue;
 				}
 				cellTo.setCellStyle(cellFrom.getCellStyle());
-				String stringCellValue = cellFrom.getStringCellValue();//纯数字的话这可能回又错 解决办法： https://blog.csdn.net/ysughw/article/details/9288307
+				String stringCellValue = cellFrom.getStringCellValue();//纯数字的话这可能会有错 解决办法： https://blog.csdn.net/ysughw/article/details/9288307
 				if(!StringUtils.isBlank(stringCellValue)) {
 					cellTo.setCellValue(stringCellValue);
 					
@@ -150,15 +150,17 @@ public class ExcelUtils {
 		wb.setSheetName(sheetIx, fileName);
 		sheet.setForceFormulaRecalculation(true);
 		for(int i=0;i<list.size();i++) {
-			//User user = list.get(i);
+			User user = list.get(i);
 			HSSFRow rowCurrent = sheet.getRow(i+1);
-			rowCurrent.createCell(1).setCellValue("1");
-			rowCurrent.createCell(2).setCellValue("1");
+			rowCurrent.createCell(1).setCellValue(user.getAge());
+			rowCurrent.createCell(2).setCellValue(user.getName());
 		}
 		
 		return fileName;
 	}
 
+	
+	
 	
 	//====================================上传需要的工具类=========================================
 	
